@@ -1,0 +1,13 @@
+prefix=/Users/fuyaoz/src/lambdalab/thirdparty/native-repositories/mac_os_x/zlib
+exec_prefix=/Users/fuyaoz/src/lambdalab/thirdparty/native-repositories/mac_os_x/zlib
+libdir=/Users/fuyaoz/src/lambdalab/thirdparty/native-repositories/mac_os_x/zlib/lib
+sharedlibdir=/Users/fuyaoz/src/lambdalab/thirdparty/native-repositories/mac_os_x/zlib/lib
+includedir=/Users/fuyaoz/src/lambdalab/thirdparty/native-repositories/mac_os_x/zlib/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.8
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}
