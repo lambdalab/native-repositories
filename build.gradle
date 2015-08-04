@@ -75,6 +75,10 @@ def downloadLLVM() {
   if (file(destDir).exists()) {
     return
   }
+
+  buildDir.mkdir();
+  file(targetOsName).mkdirs();
+
   def infix = "apple-darwin"
   if (targetOsName == "linux")
     infix = "linux-gnu-ubuntu-14.04"
