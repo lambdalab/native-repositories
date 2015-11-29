@@ -83,10 +83,10 @@ def downloadLLVM() {
   if (targetOsName == "linux")
     infix = "linux-gnu-ubuntu-14.04"
 
-  def fileName = "clang+llvm-3.6.2-x86_64-${infix}"
+  def fileName = "clang+llvm-3.7.0-x86_64-${infix}"
 
   download {
-    src "http://llvm.org/releases/3.6.2/${fileName}.tar.xz"
+    src "http://llvm.org/releases/3.7.0/${fileName}.tar.xz"
     dest "$buildDir"
     onlyIfNewer true
   }
