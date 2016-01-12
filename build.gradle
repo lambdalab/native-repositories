@@ -108,6 +108,7 @@ task downloadSources() << {
     'https://github.com/google/glog/archive/v0.3.4.zip',
     'https://github.com/google/re2/archive/2015-08-01.zip',
     'http://zlib.net/zlib128.zip',
+    'https://www.openssl.org/source/openssl-1.0.1q.tar.gz'
 //    'http://apache.mesi.com.ar/thrift/0.9.2/thrift-0.9.2.tar.gz',
 //    'http://iweb.dl.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.zip',
   ].each { url ->
@@ -137,7 +138,7 @@ task prepareSources(dependsOn: downloadSources) << {
   }
 }
 
-task buildSources() << {
+task buildSources(dependsOn: prepareSources) << {
   file("$buildDir/libs").mkdirs()
   String includePath = ""
   file("$buildDir/source").listFiles().each { dir ->
@@ -189,7 +190,7 @@ task buildSources() << {
         environment << ["CPLUS_INCLUDE_PATH": includePath]
       }
     } else {
-      if (file("$dir/configure").exists()) {
+      if (file("$dir/configure").exists() ) {
         if (!file("$dir/config.status").exists()) {
           exec {
             executable "$dir/configure"
@@ -207,6 +208,21 @@ task buildSources() << {
     }
   }
 }
+
+// in suse, install new automake and autoconf first
+
+// build openssl
+// ./config --shared --prefix=$HOME/bin/openssl
+
+// build boost
+// boost compile
+// ./boostrap
+//    ./b2 install --prefix=$HOME/bin/boost
+
+// build thrift
+// http://stackoverflow.com/questions/17799753/cross-compiling-apache-thrift-program-for-armhf remove AC_FUNC_MALLOC AC_FUNC_REALLOC
+// ./configure --with-boost=$HOME/bin/boost --with-openssl=$HOME/bin/openssl --prefix=$HOME/bin/thrift LDFLAGS=-L$HOME/bin/openssl/lib CPPFLAGS=-I$HOME/bin/openssl/include
+// make install
 
 afterEvaluate {
   downloadLLVM()
