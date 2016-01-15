@@ -1,6 +1,5 @@
-//plugins {
-//  id "de.undercouch.download" version "1.2"
-//}
+// Currently we only support mac and ubuntu out of the box, for other system, please run downloadDeps, and move the files
+// in build/libs into $targetOsName
 
 apply plugin: 'cpp'
 
@@ -208,21 +207,6 @@ task buildSources(dependsOn: prepareSources) << {
     }
   }
 }
-
-// in suse, install new automake and autoconf first
-
-// build openssl
-// ./config --shared --prefix=$HOME/bin/openssl
-
-// build boost
-// boost compile
-// ./boostrap
-//    ./b2 install --prefix=$HOME/bin/boost
-
-// build thrift
-// http://stackoverflow.com/questions/17799753/cross-compiling-apache-thrift-program-for-armhf remove AC_FUNC_MALLOC AC_FUNC_REALLOC
-// ./configure --with-boost=$HOME/bin/boost --with-openssl=$HOME/bin/openssl --prefix=$HOME/bin/thrift LDFLAGS=-L$HOME/bin/openssl/lib CPPFLAGS=-I$HOME/bin/openssl/include
-// make install
 
 afterEvaluate {
   downloadLLVM()
