@@ -70,23 +70,24 @@ make install
 # You should only use it if there is no prebuilt
 echo install clang
 cd $SRC_DIR
-wget -nc 'http://llvm.org/releases/3.7.0/llvm-3.7.0.src.tar.xz'
-wget -nc 'http://llvm.org/releases/3.7.0/cfe-3.7.0.src.tar.xz'
-wget -nc 'http://llvm.org/releases/3.7.1/compiler-rt-3.7.1.src.tar.xz'
-wget -nc 'http://llvm.org/releases/3.7.0/libcxx-3.7.0.src.tar.xz'
-wget -nc 'http://llvm.org/releases/3.7.1/libcxxabi-3.7.1.src.tar.xz'
+LLVM_VERSION=3.7.0
+wget -nc "http://llvm.org/releases/$LLVM_VERSION/llvm-$LLVM_VERSION.src.tar.xz"
+wget -nc "http://llvm.org/releases/$LLVM_VERSION/cfe-$LLVM_VERSION.src.tar.xz"
+wget -nc "http://llvm.org/releases/$LLVM_VERSION/compiler-rt-$LLVM_VERSION.src.tar.xz"
+wget -nc "http://llvm.org/releases/$LLVM_VERSION/libcxx-$LLVM_VERSION.src.tar.xz"
+wget -nc "http://llvm.org/releases/$LLVM_VERSION/libcxxabi-$LLVM_VERSION.src.tar.x"
 
-tar -xf llvm-3.7.0.src.tar.xz
-tar -xf cfe-3.7.0.src.tar.xz
-tar -xf libcxx-3.7.0.src.tar.xz
-tar -xf compiler-rt-3.7.1.src.tar.xz
-tar -xf libcxxabi-3.7.1.src.tar.xz
+tar -xf llvm-$LLVM_VERSION.src.tar.xz
+tar -xf cfe-$LLVM_VERSION.src.tar.xz
+tar -xf libcxx-$LLVM_VERSION.src.tar.xz
+tar -xf compiler-rt-$LLVM_VERSION.src.tar.xz
+tar -xf libcxxabi-$LLVM_VERSION.src.tar.xz
 
-mv llvm-3.7.0.src llvm
-mv cfe-3.7.0.src llvm/tools/clang
-mv compiler-rt-3.7.1.src llvm/projects/compiler-rt
-mv libcxx-3.7.0.src llvm/projects/libcxx
-mv libcxxabi-3.7.1.src llvm/projects/libcxxabi
+mv llvm-$LLVM_VERSION.src llvm
+mv cfe-$LLVM_VERSION.src llvm/tools/clang
+mv compiler-rt-$LLVM_VERSION.src llvm/projects/compiler-rt
+mv libcxx-$LLVM_VERSION.src llvm/projects/libcxx
+mv libcxxabi-$LLVM_VERSION.src llvm/projects/libcxxabi
 
 mkdir llvm-build
 cd llvm-build
