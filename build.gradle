@@ -79,7 +79,7 @@ def downloadLLVM() {
   file(targetOsName).mkdirs();
 
   def infix = "apple-darwin"
-  if (targetOsName == "linux")
+  if (targetOsName == "ubuntu")
     infix = "linux-gnu-ubuntu-14.04"
 
   def fileName = "clang+llvm-3.7.0-x86_64-${infix}"
