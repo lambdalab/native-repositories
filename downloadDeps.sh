@@ -4,10 +4,12 @@
 
 # we need cmake higher than 2.8.2
 
-# suse need libbz2-devel make awk unzip tar libevent-devel
+# suse need ncurses-devel // libbz2-devel make awk unzip tar libevent-devel
 # manual install cmake
 # zypper ar http://download.opensuse.org/repositories/home:/nocheck:/gcc/SLE_11_SP4/ gcc48repo
-# zypper install gcc48-c++
+# zypper ar http://download.opensuse.org/repositories/home:/rusjako/SLE_11_SP3/ ssl_new
+# zypper install gcc48-c++ libopenssl1_0_0
+
 
 cd $(dirname $0)
 
