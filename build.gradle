@@ -41,9 +41,9 @@ model {
 
       createStandardLibrary(libs, "thrift")  // 0.9.2
 
-      createStandardLibrary(libs, "clang+llvm", "clang") // 3.6.2
+      createStandardLibrary(libs, "llvm-${llvmVersion}", "clang") // 3.6.2
 
-      fileTree(dir: "$targetOsName/clang+llvm/lib", include: '**/*.a').each { file ->
+      fileTree(dir: "$targetOsName/llvm-${llvmVersion}/lib", include: '**/*.a').each { file ->
         if (file.name != 'libclang.a') {
           def libName = file.name.substring(3, file.name.length() - 2)
           libs.create(libName) {
@@ -69,7 +69,7 @@ model {
 }
 
 def downloadLLVM() {
-  def destDir = "$targetOsName/clang+llvm"
+  def destDir = "$targetOsName/llvm-${llvmVersion}"
 
   if (file(destDir).exists()) {
     return
@@ -101,113 +101,113 @@ def downloadLLVM() {
   }
 }
 
-task downloadSources() << {
-  file("$buildDir/archive").mkdirs()
-  [
-    'https://github.com/gflags/gflags/archive/v2.1.2.zip',
-    'https://github.com/google/glog/archive/v0.3.4.zip',
-    'https://github.com/google/re2/archive/2015-08-01.zip',
-    'http://zlib.net/zlib128.zip',
-    'https://www.openssl.org/source/openssl-1.0.1q.tar.gz'
-//    'http://apache.mesi.com.ar/thrift/0.9.2/thrift-0.9.2.tar.gz',
-//    'http://iweb.dl.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.zip',
-  ].each { url ->
-    download {
-      src url
-      dest "$buildDir/archive"
-      onlyIfNewer true // not working for github zip file
-      overwrite false
-    }
-  }
-}
-
-task prepareSources(dependsOn: downloadSources) << {
-  file("$buildDir/source").mkdirs()
-  fileTree(dir: "$buildDir/archive", includes: ['**/*.zip']).each { zipFile ->
-    copy {
-      from zipTree(zipFile)
-      into "$buildDir/source"
-    }
-  }
-
-  fileTree(dir: "$buildDir/archive", includes: ['**/*.gz']).each { zipFile ->
-    copy {
-      from tarTree(zipFile)
-      into "$buildDir/source"
-    }
-  }
-}
-
-task buildSources(dependsOn: prepareSources) << {
-  file("$buildDir/libs").mkdirs()
-  String includePath = ""
-  file("$buildDir/source").listFiles().each { dir ->
-    if (!dir.isDirectory()) {
-      return
-    }
-
-    int idx = dir.name.indexOf("-");
-    if (idx == -1) {
-      idx = dir.name.size()
-    }
-    def destDirName = dir.name.substring(0, idx)
-    def destDir = file("$buildDir/libs/$destDirName")
-    includePath = includePath + "$destDir/include:"
-  }
-
-  file("$buildDir/source").listFiles().each { dir ->
-    if (!dir.isDirectory()) {
-      return
-    }
-
-    println "\n" + dir + "\n"
-
-    int idx = dir.name.indexOf("-");
-    if (idx == -1) {
-      idx = dir.name.size()
-    }
-    def destDirName = dir.name.substring(0, idx)
-    def destDir = file("$targetOsName/$destDirName")
-    def tmpDir = file("$buildDir/tmps/$destDirName")
-
-    destDir.mkdir()
-    tmpDir.mkdirs()
-
-    if (file("$dir/CMakeLists.txt").exists()) {
-      if (!file("$tmpDir/Makefile").exists()) {
-        println("executing cmake")
-        exec {
-          executable "cmake"
-          args dir, "-DCMAKE_INSTALL_PREFIX:PATH=$destDir"
-          workingDir tmpDir
-        }
-      }
-
-      exec {
-        executable "make"
-        args "install"
-        workingDir tmpDir
-        environment << ["CPLUS_INCLUDE_PATH": includePath]
-      }
-    } else {
-      if (file("$dir/configure").exists() ) {
-        if (!file("$dir/config.status").exists()) {
-          exec {
-            executable "$dir/configure"
-            args "prefix=$destDir"
-            workingDir dir
-          }
-        }
-      }
-      exec {
-        executable "make"
-        args  "prefix=$destDir", "--directory=$dir", "install"
-        workingDir tmpDir
-        environment << ["CPLUS_INCLUDE_PATH": includePath]
-      }
-    }
-  }
-}
+//task downloadSources() << {
+//  file("$buildDir/archive").mkdirs()
+//  [
+//    'https://github.com/gflags/gflags/archive/v2.1.2.zip',
+//    'https://github.com/google/glog/archive/v0.3.4.zip',
+//    'https://github.com/google/re2/archive/2015-08-01.zip',
+//    'http://zlib.net/zlib128.zip',
+//    'https://www.openssl.org/source/openssl-1.0.1q.tar.gz'
+////    'http://apache.mesi.com.ar/thrift/0.9.2/thrift-0.9.2.tar.gz',
+////    'http://iweb.dl.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.zip',
+//  ].each { url ->
+//    download {
+//      src url
+//      dest "$buildDir/archive"
+//      onlyIfNewer true // not working for github zip file
+//      overwrite false
+//    }
+//  }
+//}
+//
+//task prepareSources(dependsOn: downloadSources) << {
+//  file("$buildDir/source").mkdirs()
+//  fileTree(dir: "$buildDir/archive", includes: ['**/*.zip']).each { zipFile ->
+//    copy {
+//      from zipTree(zipFile)
+//      into "$buildDir/source"
+//    }
+//  }
+//
+//  fileTree(dir: "$buildDir/archive", includes: ['**/*.gz']).each { zipFile ->
+//    copy {
+//      from tarTree(zipFile)
+//      into "$buildDir/source"
+//    }
+//  }
+//}
+//
+//task buildSources(dependsOn: prepareSources) << {
+//  file("$buildDir/libs").mkdirs()
+//  String includePath = ""
+//  file("$buildDir/source").listFiles().each { dir ->
+//    if (!dir.isDirectory()) {
+//      return
+//    }
+//
+//    int idx = dir.name.indexOf("-");
+//    if (idx == -1) {
+//      idx = dir.name.size()
+//    }
+//    def destDirName = dir.name.substring(0, idx)
+//    def destDir = file("$buildDir/libs/$destDirName")
+//    includePath = includePath + "$destDir/include:"
+//  }
+//
+//  file("$buildDir/source").listFiles().each { dir ->
+//    if (!dir.isDirectory()) {
+//      return
+//    }
+//
+//    println "\n" + dir + "\n"
+//
+//    int idx = dir.name.indexOf("-");
+//    if (idx == -1) {
+//      idx = dir.name.size()
+//    }
+//    def destDirName = dir.name.substring(0, idx)
+//    def destDir = file("$targetOsName/$destDirName")
+//    def tmpDir = file("$buildDir/tmps/$destDirName")
+//
+//    destDir.mkdir()
+//    tmpDir.mkdirs()
+//
+//    if (file("$dir/CMakeLists.txt").exists()) {
+//      if (!file("$tmpDir/Makefile").exists()) {
+//        println("executing cmake")
+//        exec {
+//          executable "cmake"
+//          args dir, "-DCMAKE_INSTALL_PREFIX:PATH=$destDir"
+//          workingDir tmpDir
+//        }
+//      }
+//
+//      exec {
+//        executable "make"
+//        args "install"
+//        workingDir tmpDir
+//        environment << ["CPLUS_INCLUDE_PATH": includePath]
+//      }
+//    } else {
+//      if (file("$dir/configure").exists() ) {
+//        if (!file("$dir/config.status").exists()) {
+//          exec {
+//            executable "$dir/configure"
+//            args "prefix=$destDir"
+//            workingDir dir
+//          }
+//        }
+//      }
+//      exec {
+//        executable "make"
+//        args  "prefix=$destDir", "--directory=$dir", "install"
+//        workingDir tmpDir
+//        environment << ["CPLUS_INCLUDE_PATH": includePath]
+//      }
+//    }
+//  }
+//}
 
 afterEvaluate {
   downloadLLVM()
