@@ -83,10 +83,10 @@ def downloadLLVM() {
     infix = "linux-gnu-ubuntu-14.04"
   else if (targetOsName == "suse")
     infix = "sles11.3-linux-gnu"
-  def fileName = "clang+llvm-3.8.0-x86_64-${infix}"
+  def fileName = "clang+llvm-${llvmVersion}.0-x86_64-${infix}"
 
   download {
-    src "http://llvm.org/releases/3.8.0/${fileName}.tar.xz"
+    src "http://llvm.org/releases/${llvmVersion}.0/${fileName}.tar.xz"
     dest "$buildDir"
     onlyIfNewer true
   }
