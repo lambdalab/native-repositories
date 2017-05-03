@@ -44,7 +44,7 @@ model {
       createStandardLibrary(libs, "llvm-${llvmVersion}", "clang")
 
       fileTree(dir: "$targetOsName/llvm-${llvmVersion}/lib", include: '**/*.a').each { file ->
-        if (file.name != 'libclang.a' && file.name != 'libclangSema.a' /* included in the patch */) {
+        if (file.name != 'libclang.a' /* && file.name != 'libclangSema.a' */ /* included in the patch */) {
           def libName = file.name.substring(3, file.name.length() - 2)
           libs.create(libName) {
             binaries.withType(StaticLibraryBinary) {
@@ -54,14 +54,14 @@ model {
         }
       }
 
-      fileTree(dir: "$targetOsName/patch", include: '**/*.a').each { file ->
-        def libName = file.name.substring(3, file.name.length() - 2)
-        libs.create(libName) {
-          binaries.withType(StaticLibraryBinary) {
-            staticLibraryFile = file
-          }
-        }
-      }
+//      fileTree(dir: "$targetOsName/patch", include: '**/*.a').each { file ->
+//        def libName = file.name.substring(3, file.name.length() - 2)
+//        libs.create(libName) {
+//          binaries.withType(StaticLibraryBinary) {
+//            staticLibraryFile = file
+//          }
+//        }
+//      }
 
       createStandardLibrary(libs, "boost")  // 1.58.0 Use abi linkage with this library
 
