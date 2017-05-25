@@ -41,15 +41,24 @@ model {
 
       createStandardLibrary(libs, "thrift")  // 0.9.2
 
-      createStandardLibrary(libs, "llvm-${llvmVersion}", "clang") // 3.6.2
+      createStandardLibrary(libs, "llvm-${llvmVersion}", "clang")
 
       fileTree(dir: "$targetOsName/llvm-${llvmVersion}/lib", include: '**/*.a').each { file ->
-        if (file.name != 'libclang.a') {
+        if (file.name != 'libclang.a' && file.name != 'libclangSema.a' && file.name != 'libclangParse.a' /* included in the patch */) {
           def libName = file.name.substring(3, file.name.length() - 2)
           libs.create(libName) {
             binaries.withType(StaticLibraryBinary) {
               staticLibraryFile = file
             }
+          }
+        }
+      }
+
+      fileTree(dir: "$targetOsName/patch", include: '**/*.a').each { file ->
+        def libName = file.name.substring(3, file.name.length() - 2)
+        libs.create(libName) {
+          binaries.withType(StaticLibraryBinary) {
+            staticLibraryFile = file
           }
         }
       }
