@@ -92,7 +92,7 @@ def downloadLLVM() {
 
   def infix = "apple-darwin"
   if (targetOsName == "ubuntu")
-    infix = "linux-gnu-ubuntu-14.04"
+    infix = "linux-gnu-ubuntu-${ubuntuVersion}"
   else if (targetOsName == "suse")
     infix = "sles11.3-linux-gnu"
   def fileName = "clang+llvm-${llvmVersion}.0-x86_64-${infix}"
