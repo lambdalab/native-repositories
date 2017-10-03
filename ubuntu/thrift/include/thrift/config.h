@@ -13,13 +13,13 @@
 #define ARITHMETIC_RIGHT_SHIFT 1
 
 /* Defines automake version */
-#define AUTOMAKE_VERSION 1.14.1
+/* #undef AUTOMAKE_VERSION */
 
 /* Use *.h extension for parser header file */
 /* #undef BISON_USE_PARSER_H_EXTENSION */
 
 /* Defines bison version */
-#define BISON_VERSION 3.0.2
+#define BISON_VERSION 0.0
 
 /* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
    systems. This function is required for `alloca.c' support on those systems.
@@ -179,7 +179,7 @@
 /* #undef HAVE_STAT_EMPTY_STRING_BUG */
 
 /* Define to 1 if stdbool.h conforms to C99. */
-#define HAVE_STDBOOL_H 1
+/* #undef HAVE_STDBOOL_H */
 
 /* Define to 1 if you have the <stddef.h> header file. */
 #define HAVE_STDDEF_H 1
@@ -357,7 +357,7 @@
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
-#define YYTEXT_POINTER 1
+/* #undef YYTEXT_POINTER */
 
 /* Define for Solaris 2.5.1 so the uint32_t typedef from <sys/synch.h>,
    <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the

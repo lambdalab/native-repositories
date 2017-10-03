@@ -1,4 +1,4 @@
-prefix=/home/lambdalab-prod/src/lambdalab/thirdparty/native-repositories/linux/glog
+prefix=/home/ubuntu/lambdalab/build/libs/glog
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

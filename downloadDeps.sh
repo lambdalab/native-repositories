@@ -70,7 +70,7 @@ make install
 
 echo 'install thrift'
 cd $SRC_DIR
-wget -nc --no-check-certificate 'http://apache.mesi.com.ar/thrift/0.9.2/thrift-0.9.2.tar.gz'
+wget -nc --no-check-certificate 'http://archive.apache.org/dist/thrift/0.9.2/thrift-0.9.2.tar.gz'
 tar -xf thrift-0.9.2.tar.gz
 cd thrift-0.9.2
 ./configure --with-python=false --with-php=false --with-boost=$LIB_DIR/boost --with-openssl=$LIB_DIR/openssl --prefix=$LIB_DIR/thrift LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIB_DIR/openssl/lib LDFLAGS=-L$LIB_DIR/openssl/lib CPPFLAGS=-I$LIB_DIR/openssl/include

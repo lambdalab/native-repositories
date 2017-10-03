@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/lambdalab-prod/src/lambdalab/thirdparty/native-repositories/linux/glog/lib'
+libdir='/home/ubuntu/lambdalab/build/libs/glog/lib'

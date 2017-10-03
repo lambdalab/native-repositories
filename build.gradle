@@ -45,15 +45,15 @@ model {
 
       createStandardLibrary(libs, "llvm-${llvmVersion}", "clang")
 
-      fileTree(dir: "$targetOsName/patch", include: '**/*.a').each { file ->
-        def libName = file.name.substring(3, file.name.length() - 2)
-        libs.create(libName) {
-          libInPatch += file.name
-          binaries.withType(StaticLibraryBinary) {
-            staticLibraryFile = file
-          }
-        }
-      }
+//      fileTree(dir: "$targetOsName/patch", include: '**/*.a').each { file ->
+//        def libName = file.name.substring(3, file.name.length() - 2)
+//        libs.create(libName) {
+//          libInPatch += file.name
+//          binaries.withType(StaticLibraryBinary) {
+//            staticLibraryFile = file
+//          }
+//        }
+//      }
 
       fileTree(dir: "$targetOsName/llvm-${llvmVersion}/lib", include: '**/*.a').each { file ->
         if (!libInPatch.contains(file.name) /* included in the patch */) {

@@ -1,4 +1,4 @@
-prefix=/home/lambdalab-prod/src/lambdalab/thirdparty/native-repositories/linux/re2
+prefix=/home/ubuntu/lambdalab/build/libs/re2
 exec_prefix=${prefix}
 includedir=${prefix}/include
 libdir=${exec_prefix}/lib
