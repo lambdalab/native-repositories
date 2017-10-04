@@ -5,6 +5,9 @@ apply plugin: 'cpp'
 
 import de.undercouch.gradle.tasks.download.Download
 
+import java.nio.file.Files
+import java.nio.file.Paths
+
 def createStandardLibrary(libs, libName) {
   createStandardLibrary(libs, libName, libName)
 }
@@ -82,13 +85,20 @@ model {
 
 def downloadLLVM() {
   def destDir = "$targetOsName/llvm-${llvmVersion}"
+  def systemLLVM = "/usr/lib/llvm-${llvmVersion}"
 
   if (file(destDir).exists()) {
     return
   }
 
-  buildDir.mkdir();
-  file(targetOsName).mkdirs();
+  // Try symbolic link first
+  if (file(systemLLVM).exists()) {
+    Files.createSymbolicLink(Paths.get(file(destDir).getAbsolutePath()), Paths.get(file(systemLLVM).getAbsolutePath()))
+    return
+  }
+
+  buildDir.mkdir()
+  file(targetOsName).mkdirs()
 
   def infix = "apple-darwin"
   if (targetOsName == "ubuntu")
