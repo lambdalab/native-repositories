@@ -46,7 +46,7 @@ model {
 
       createStandardLibrary(libs, "thrift")  // 0.9.2
 
-      createStandardLibrary(libs, "llvm-${llvmVersion}", "clang")
+      // createStandardLibrary(libs, "llvm-${llvmVersion}", "clang")
 
 //      fileTree(dir: "$targetOsName/patch", include: '**/*.a').each { file ->
 //        def libName = file.name.substring(3, file.name.length() - 2)
@@ -58,16 +58,16 @@ model {
 //        }
 //      }
 
-      fileTree(dir: "$targetOsName/llvm-${llvmVersion}/lib", include: '**/*.a').each { file ->
-        if (!libInPatch.contains(file.name) /* included in the patch */) {
-          def libName = file.name.substring(3, file.name.length() - 2)
-          libs.create(libName) {
-            binaries.withType(StaticLibraryBinary) {
-              staticLibraryFile = file
-            }
-          }
-        }
-      }
+      // fileTree(dir: "$targetOsName/llvm-${llvmVersion}/lib", include: '**/*.a').each { file ->
+      //   if (!libInPatch.contains(file.name) /* included in the patch */) {
+      //     def libName = file.name.substring(3, file.name.length() - 2)
+      //     libs.create(libName) {
+      //       binaries.withType(StaticLibraryBinary) {
+      //         staticLibraryFile = file
+      //       }
+      //     }
+      //   }
+      // }
 
       createStandardLibrary(libs, "boost")  // 1.58.0 Use abi linkage with this library
 
@@ -83,45 +83,45 @@ model {
   }
 }
 
-def downloadLLVM() {
-  def destDir = "$targetOsName/llvm-${llvmVersion}"
-  def systemLLVM = "/usr/lib/llvm-${llvmVersion}"
+// def downloadLLVM() {
+//   def destDir = "$targetOsName/llvm-${llvmVersion}"
+//   def systemLLVM = "/usr/lib/llvm-${llvmVersion}"
 
-  if (file(destDir).exists()) {
-    return
-  }
+//   if (file(destDir).exists()) {
+//     return
+//   }
 
-  // Try symbolic link first
-  if (file(systemLLVM).exists()) {
-    Files.createSymbolicLink(Paths.get(file(destDir).getAbsolutePath()), Paths.get(file(systemLLVM).getAbsolutePath()))
-    return
-  }
+//   // Try symbolic link first
+//   if (file(systemLLVM).exists()) {
+//     Files.createSymbolicLink(Paths.get(file(destDir).getAbsolutePath()), Paths.get(file(systemLLVM).getAbsolutePath()))
+//     return
+//   }
 
-  buildDir.mkdir()
-  file(targetOsName).mkdirs()
+//   buildDir.mkdir()
+//   file(targetOsName).mkdirs()
 
-  def infix = "apple-darwin"
-  if (targetOsName == "ubuntu")
-    infix = "linux-gnu-ubuntu-${ubuntuVersion}"
-  else if (targetOsName == "suse")
-    infix = "sles11.3-linux-gnu"
-  def fileName = "clang+llvm-${llvmVersion}.0-x86_64-${infix}"
+//   def infix = "apple-darwin"
+//   if (targetOsName == "ubuntu")
+//     infix = "linux-gnu-ubuntu-${ubuntuVersion}"
+//   else if (targetOsName == "suse")
+//     infix = "sles11.3-linux-gnu"
+//   def fileName = "clang+llvm-${llvmVersion}.0-x86_64-${infix}"
 
-  download {
-    src "http://llvm.org/releases/${llvmVersion}.0/${fileName}.tar.xz"
-    dest "$buildDir"
-    onlyIfNewer true
-  }
+//   download {
+//     src "http://llvm.org/releases/${llvmVersion}.0/${fileName}.tar.xz"
+//     dest "$buildDir"
+//     onlyIfNewer true
+//   }
 
-  exec {
-    executable "tar"
-    args "xpvf", "$buildDir/${fileName}.tar.xz", "-C", "$buildDir"
-  }
-  exec {
-    executable "mv"
-    args "$buildDir/$fileName", "$destDir"
-  }
-}
+//   exec {
+//     executable "tar"
+//     args "xpvf", "$buildDir/${fileName}.tar.xz", "-C", "$buildDir"
+//   }
+//   exec {
+//     executable "mv"
+//     args "$buildDir/$fileName", "$destDir"
+//   }
+// }
 
 //task downloadSources() << {
 //  file("$buildDir/archive").mkdirs()
@@ -231,6 +231,6 @@ def downloadLLVM() {
 //  }
 //}
 
-afterEvaluate {
-  downloadLLVM()
-}
+// afterEvaluate {
+//   downloadLLVM()
+// }
